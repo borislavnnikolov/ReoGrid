@@ -199,7 +199,7 @@ namespace unvell.ReoGrid.IO.OpenXML
 
             var sheet = doc.LoadRelationResourceById<Schema.Worksheet>(doc.Workbook, sheetIndex.resId);
 
-			const float fixedCharWidth = 7.0f; //ResourcePoolManager.Instance.GetFont("Arial", 10f, System.Drawing.FontStyle.Regular).SizeInPoints;
+            const float fixedCharWidth = 7.0f; //ResourcePoolManager.Instance.GetFont("Arial", 10f, System.Drawing.FontStyle.Regular).SizeInPoints;
 
             #region SheetView
             var sheetView = sheet.sheetViews.FirstOrDefault() as SheetView;
@@ -249,7 +249,7 @@ namespace unvell.ReoGrid.IO.OpenXML
                 if (sheet.sheetFormatProperty.defaultColumnWidth != null)
                 {
                     if (double.TryParse(sheet.sheetFormatProperty.defaultColumnWidth, System.Globalization.NumberStyles.Number,
-						ExcelWriter.EnglishCulture, out var defColumnWidth))
+                        ExcelWriter.EnglishCulture, out var defColumnWidth))
                     {
                         ushort pixelWidth = (ushort)Math.Truncate(((256 * defColumnWidth + Math.Truncate(128 / fixedCharWidth)) / 256) * fixedCharWidth);
 
@@ -261,30 +261,30 @@ namespace unvell.ReoGrid.IO.OpenXML
             }
             #endregion // SheetFormatProperty
 
-			#region Resize
+            #region Resize
             // resize to dimension 
 
-			int sheetRowCount = sheet.rows.Count;
-			int sheetColCount = sheet.cols.Count;
+            int sheetRowCount = sheet.rows.Count;
+            int sheetColCount = sheet.cols.Count;
 
             if (sheet.dimension != null && !string.IsNullOrEmpty(sheet.dimension.address))
             {
                 RangePosition contentRange = new RangePosition(sheet.dimension.address);
 
-				sheetRowCount = Math.Max(sheetRowCount, contentRange.EndRow + 1);
-				sheetColCount = Math.Max(sheetColCount, contentRange.EndCol + 1);
-			}
+                sheetRowCount = Math.Max(sheetRowCount, contentRange.EndRow + 1);
+                sheetColCount = Math.Max(sheetColCount, contentRange.EndCol + 1);
+            }
 
-			if (rgSheet.RowCount < sheetRowCount)
-                {
-				rgSheet.Rows = sheetRowCount;
-                }
+            if (rgSheet.RowCount < sheetRowCount)
+            {
+                rgSheet.Rows = sheetRowCount;
+            }
 
-			if (rgSheet.ColumnCount < sheetColCount)
-                {
-				rgSheet.Columns = sheetColCount;
-                }
-			#endregion // Resize
+            if (rgSheet.ColumnCount < sheetColCount)
+            {
+                rgSheet.Columns = sheetColCount;
+            }
+            #endregion // Resize
 
             #region Columns
             // columns
@@ -337,7 +337,7 @@ namespace unvell.ReoGrid.IO.OpenXML
                     if (extension.ConditionalFormattings != null)
                     {
                         var list2009 = ConditionalFormatHelper.From2009(extension.ConditionalFormattings, doc);
-                        
+
                         foreach (var format2009 in list2009)
                         {
                             foreach (var rule2009 in format2009.Rules)
@@ -363,7 +363,7 @@ namespace unvell.ReoGrid.IO.OpenXML
                 }
             }
 
-            
+
 
             if (list != null && list.Count > 0)
             {
@@ -452,7 +452,7 @@ namespace unvell.ReoGrid.IO.OpenXML
                 RowHeader rowHeader;
 
                 if (//row.customHeight == "1"
-                        //&& 
+                    //&& 
                     !string.IsNullOrEmpty(row.height) && double.TryParse(row.height, NumberStyles.Float, CultureInfo.InvariantCulture, out rowHeight))
                 {
                     rowHeader = rgSheet.GetRowHeader(rowIndex);
@@ -529,7 +529,7 @@ namespace unvell.ReoGrid.IO.OpenXML
                         if (//style.applyBorder == "1" && 
                             !string.IsNullOrEmpty(style.borderId))
                         {
-							if (int.TryParse(style.borderId, out var id)
+                            if (int.TryParse(style.borderId, out var id)
                                 && id >= 0 && id < borders.Count)
                             {
                                 var border = borders[id];
@@ -812,16 +812,16 @@ namespace unvell.ReoGrid.IO.OpenXML
                     swValue.Stop();
 #endif // DEBUG
 
-#endregion // Cell Value
+                    #endregion // Cell Value
 
-#region Data Format
+                    #region Data Format
 
                     if (style != null)
                     {
                         int numFormatId = 0;
 
                         if (/* rgCell.DataFormat == CellDataFormatFlag.General */ // Не совсем понимаю почему есть проверка General. Ведь если формат установлен пользователем - его надо применить
-                            //&& style.applyNumberFormat == "1" 
+                                                                                  //&& style.applyNumberFormat == "1" 
                             !string.IsNullOrEmpty(style.numberFormatId)
                             && int.TryParse(style.numberFormatId, out numFormatId))
                         {
@@ -838,9 +838,9 @@ namespace unvell.ReoGrid.IO.OpenXML
                         DataFormatterManager.Instance.FormatCell(rgCell);
                     }
 
-#endregion // Data Format
+                    #endregion // Data Format
 
-#region Cell Formula
+                    #region Cell Formula
 #if FORMULA
 
 #if DEBUG
@@ -855,7 +855,7 @@ namespace unvell.ReoGrid.IO.OpenXML
 
                         if (formula.type == "shared")
                         {
-							if (int.TryParse(formula.sharedIndex, out var sharedIndex))
+                            if (int.TryParse(formula.sharedIndex, out var sharedIndex))
                             {
                                 if (!string.IsNullOrEmpty(formula.val))
                                 {
@@ -893,7 +893,7 @@ namespace unvell.ReoGrid.IO.OpenXML
 #endif // DEBUG
 #endif // FORMULA
 
-#endregion // Cell Formula
+                    #endregion // Cell Formula
                 }
 
 #if DEBUG
@@ -901,13 +901,13 @@ namespace unvell.ReoGrid.IO.OpenXML
 #endif // DEBUG
             }
 
-#endregion // Rows
+            #endregion // Rows
 
 #if DEBUG
             swRowHeight.Start();
 #endif // DEBUG
 
-#region Normalize Row Heights
+            #region Normalize Row Heights
             //int offset = 0;
             for (int i = lastRowIndex + 1; i < rgSheet.Rows; i++)
             {
@@ -916,13 +916,13 @@ namespace unvell.ReoGrid.IO.OpenXML
                 rowHeader.InnerHeight = defaultRowHeight;
                 rowTop += defaultRowHeight;
             }
-#endregion // Normalize Row Heights
+            #endregion // Normalize Row Heights
 
 #if DEBUG
             swRowHeight.Stop();
 #endif
 
-#region Merge
+            #region Merge
             // merge
             if (sheet.mergeCells != null)
             {
@@ -931,9 +931,9 @@ namespace unvell.ReoGrid.IO.OpenXML
                     rgSheet.MergeRange(new RangePosition(mcell.address), updateUIAndEvent: false);
                 }
             }
-#endregion // Merge
+            #endregion // Merge
 
-#region Border
+            #region Border
 
 #if DEBUG
             swBorder.Start();
@@ -1021,9 +1021,9 @@ namespace unvell.ReoGrid.IO.OpenXML
             swBorder.Stop();
 #endif // DEBUG
 
-#endregion // Border
+            #endregion // Border
 
-#region Drawing
+            #region Drawing
 #if DRAWING
             if (sheet.DrawingReference != null)
             {
@@ -1043,9 +1043,9 @@ namespace unvell.ReoGrid.IO.OpenXML
 #endif // DEBUG
             }
 #endif // DRAWING
-#endregion // Drawing
+            #endregion // Drawing
 
-#region Print Settings
+            #region Print Settings
 #if PRINT
             if (sheet.pageMargins != null)
             {
@@ -1074,9 +1074,9 @@ namespace unvell.ReoGrid.IO.OpenXML
                 }
             }
 #endif // PRINT
-#endregion // Print Settings
+            #endregion // Print Settings
 
-#region Freeze
+            #region Freeze
             //#if FREEZE
             if (sheetView != null && sheetView.pane != null)
             {
@@ -1097,7 +1097,7 @@ namespace unvell.ReoGrid.IO.OpenXML
                 }
             }
             //#endif // FREEZE
-#endregion // Freeze
+            #endregion // Freeze
 
             rgSheet.UpdateViewportController();
 
@@ -1141,7 +1141,7 @@ namespace unvell.ReoGrid.IO.OpenXML
                     }
                     if (dxf?.NumberFormat?.NumberFormatId != null)
                     {
-                        
+
                     }
                 }
             }
@@ -1178,7 +1178,7 @@ namespace unvell.ReoGrid.IO.OpenXML
 
         #endregion // Worksheet
 
-#region Style
+        #region Style
         private static void SetStyleFont(Document doc, WorksheetRangeStyle styleset, Schema.Font font)
         {
             SolidColor tempColor = new SolidColor();
@@ -1240,7 +1240,7 @@ namespace unvell.ReoGrid.IO.OpenXML
             WorksheetRangeStyle styleset = new WorksheetRangeStyle(rgSheet.RootStyle);
             SolidColor tempColor = new SolidColor();
 
-#region Font
+            #region Font
             if (//style.applyFont == "1" && 
                 !string.IsNullOrEmpty(style.fontId))
             {
@@ -1251,9 +1251,9 @@ namespace unvell.ReoGrid.IO.OpenXML
                     SetStyleFont(doc, styleset, font);
                 }
             }
-#endregion // Font
+            #endregion // Font
 
-#region Fill
+            #region Fill
 
             if (//OpenXMLUtility.IsTrue(style.applyFill) &&
                 !string.IsNullOrEmpty(style.fillId))
@@ -1301,9 +1301,9 @@ namespace unvell.ReoGrid.IO.OpenXML
                     }
                 }
             }
-#endregion // Fill
+            #endregion // Fill
 
-#region Alignment
+            #region Alignment
             if (//style.applyAlignment == "1" && 
                 style.alignment != null)
             {
@@ -1374,26 +1374,26 @@ namespace unvell.ReoGrid.IO.OpenXML
                 // text rotation
                 if (!string.IsNullOrEmpty(style.alignment.textRotation))
                 {
-					if (int.TryParse(style.alignment.textRotation, out var angle))
+                    if (int.TryParse(style.alignment.textRotation, out var angle))
                     {
-						styleset.Flag |= PlainStyleFlag.RotationAngle;
+                        styleset.Flag |= PlainStyleFlag.RotationAngle;
 
                         if (angle > 90) angle = 90 - angle;
 
-						styleset.RotationAngle = angle;
+                        styleset.RotationAngle = angle;
                     }
                 }
 
-				// indent
-				if (!string.IsNullOrEmpty(style.alignment.indent))
-				{
-					if (ushort.TryParse(style.alignment.indent, out var indent))
-					{
-						styleset.Indent = indent;
+                // indent
+                if (!string.IsNullOrEmpty(style.alignment.indent))
+                {
+                    if (ushort.TryParse(style.alignment.indent, out var indent))
+                    {
+                        styleset.Indent = indent;
+                    }
+                }
             }
-				}
-			}
-#endregion // Alignment
+            #endregion // Alignment
 
             if (styleset.Flag != PlainStyleFlag.None)
             {
@@ -1402,9 +1402,9 @@ namespace unvell.ReoGrid.IO.OpenXML
 
             style._preprocessed = true;
         }
-#endregion // Style
+        #endregion // Style
 
-#region Color
+        #region Color
         private static bool ConvertFromIndexedColor(Document doc, ColorValue color, ref SolidColor rgColor)
         {
             if (color == null) return false;
@@ -1500,9 +1500,9 @@ namespace unvell.ReoGrid.IO.OpenXML
 
             return false;
         }
-#endregion // Color
+        #endregion // Color
 
-#region Border
+        #region Border
         private static void PreprocessCellBorders(Document doc, Border border)
         {
             border._hasTop = ConvertFromExcelBorder(doc, border.top, ref border._top);
@@ -1604,9 +1604,9 @@ namespace unvell.ReoGrid.IO.OpenXML
 
             }
         }
-#endregion
+        #endregion
 
-#region Data Format
+        #region Data Format
 
         //private static Regex numberFormatRegex = new Regex("0*\\.{[0]+}");
 
@@ -1816,7 +1816,7 @@ namespace unvell.ReoGrid.IO.OpenXML
                             pattern = ExcelDateTimeNumberFormatConverter.ToReogridFormatString(pattern);
 
                             flag = CellDataFormatFlag.DateTime;
-                            
+
                             arg = new DateTimeDataFormatter.DateTimeFormatArgs
                             {
                                 Format = pattern,
@@ -1857,7 +1857,7 @@ namespace unvell.ReoGrid.IO.OpenXML
             }
         }
 
-        private static  bool IsCultureConditionalFormatting(string conditionFormatting, out string lcid)
+        private static bool IsCultureConditionalFormatting(string conditionFormatting, out string lcid)
         {
             var match = Regex.Match(conditionFormatting, @"\$-(?<lcid>[0-9]+)");
             lcid = string.Empty;
@@ -1958,7 +1958,7 @@ namespace unvell.ReoGrid.IO.OpenXML
                 if (obj != null)
                 {
                     obj.Bounds = GetDrawingBounds(rgSheet, anchor);
-                
+
                     rgSheet.FloatingObjects.Add(obj);
                 }
             }
@@ -1985,7 +1985,7 @@ namespace unvell.ReoGrid.IO.OpenXML
 
             if (prop != null)
             {
-#region Line
+                #region Line
                 if (prop.ln != null)
                 {
                     if (prop.ln.solidFill != null)
@@ -2017,7 +2017,7 @@ namespace unvell.ReoGrid.IO.OpenXML
                         }
                     }
                 }
-#endregion // Line
+                #endregion // Line
 
                 if (prop.solidFill != null)
                 {
@@ -2031,7 +2031,7 @@ namespace unvell.ReoGrid.IO.OpenXML
                 }
             }
 
-#region Style
+            #region Style
             if (style != null)
             {
                 var lnRef = style.lnRef;
@@ -2096,7 +2096,7 @@ namespace unvell.ReoGrid.IO.OpenXML
                 {
                 }
             }
-#endregion Style
+            #endregion Style
 
             if (prop != null && prop.xfrm != null)
             {
@@ -2109,7 +2109,7 @@ namespace unvell.ReoGrid.IO.OpenXML
                 }
             }
         }
-        
+
         private static void SetDrawingObjectStyle(
             Document doc,
             DrawingObject obj,
@@ -2189,7 +2189,7 @@ namespace unvell.ReoGrid.IO.OpenXML
 
                 if (lnRef != null)
                 {
-                    int index = (int) lnRef.idx;
+                    int index = (int)lnRef.idx;
                     if (theme.elements.fmtScheme != null
                         && theme.elements.fmtScheme.lineStyles != null
                         && index > 0
@@ -2219,7 +2219,7 @@ namespace unvell.ReoGrid.IO.OpenXML
 
                 if (!overrideFill && style.fillRef != null)
                 {
-                    var index = (int) style.fillRef.idx;
+                    var index = (int)style.fillRef.idx;
                     //int.TryParse(style.fillRef.idx, out var index);
 
                     if (theme.elements.fmtScheme != null
@@ -2295,8 +2295,8 @@ namespace unvell.ReoGrid.IO.OpenXML
                     return false;
             }
         }
-        
-#region Image
+
+        #region Image
         private static ImageObject LoadImage(Document doc, RGWorksheet rgSheet, CT_Picture pic, Schema.Drawing drawingFile)
         {
             var blipFill = pic.blipFill;
@@ -2366,9 +2366,9 @@ namespace unvell.ReoGrid.IO.OpenXML
 
             return null;
         }
-#endregion // Image
+        #endregion // Image
 
-#region LoadShape
+        #region LoadShape
         private static Drawing.DrawingObject LoadShape(Document doc, RGWorksheet rgSheet, CT_Shape shape)
         {
             DrawingObject obj = null;
@@ -2434,35 +2434,35 @@ namespace unvell.ReoGrid.IO.OpenXML
                         var rgShape = (Drawing.Shapes.ShapeObject)obj;
 
                         rgShape.RichText = CreateRichTextFromRuns(doc, shape.txBody.p);
-                    var sb = new StringBuilder();
-                    RGFloat fontSize = 11.0f;
+                        var sb = new StringBuilder();
+                        RGFloat fontSize = 11.0f;
 
-                    foreach (var p in shape.txBody.p)
-                    {
-                        if (p.r != null)
+                        foreach (var p in shape.txBody.p)
                         {
-                            foreach (var r in p.r)
+                            if (p.r != null)
                             {
-                                if (r?.t != null
-                                    && !string.IsNullOrEmpty(r.t))
+                                foreach (var r in p.r)
                                 {
-                                    var runPr = r.rPr;
-
-                                    if (runPr != null)
+                                    if (r?.t != null
+                                        && !string.IsNullOrEmpty(r.t))
                                     {
-                                        fontSize = (float) runPr.sz / 133f;
+                                        var runPr = r.rPr;
+
+                                        if (runPr != null)
+                                        {
+                                            fontSize = (float)runPr.sz / 133f;
+                                        }
+
+                                        sb.Append(r.t);
                                     }
-
-                                    sb.Append(r.t);
                                 }
+
+                                sb.Append(Environment.NewLine);
                             }
-
-                            sb.Append(Environment.NewLine);
                         }
-                    }
 
-                    rgShape.Text = sb.ToString();
-                    rgShape.FontSize = fontSize;
+                        rgShape.Text = sb.ToString();
+                        rgShape.FontSize = fontSize;
 
                         if (shape.txBody.bodyPr != null)
                         {
@@ -2501,8 +2501,8 @@ namespace unvell.ReoGrid.IO.OpenXML
         }
 
         private static DrawingObject LoadShape(
-            Document doc, 
-            RGWorksheet rgSheet, 
+            Document doc,
+            RGWorksheet rgSheet,
             CT_Connector shape)
         {
             DrawingObject obj = null;
@@ -2565,7 +2565,7 @@ namespace unvell.ReoGrid.IO.OpenXML
             }
             return obj;
         }
-        
+
         private static Drawing.Shapes.Line LoadLine(CT_ShapeProperties prop)
         {
             Drawing.Shapes.Line line = new Drawing.Shapes.Line();
@@ -2633,9 +2633,9 @@ namespace unvell.ReoGrid.IO.OpenXML
             return line;
         }
 
-#endregion // LoadShape
+        #endregion // LoadShape
 
-#region GetDrawingBounds
+        #region GetDrawingBounds
         private static Rectangle GetDrawingBounds(RGWorksheet rgSheet, CT_TwoCellAnchor archor)
         {
             if (archor.to.row >= rgSheet.RowCount)
@@ -2645,7 +2645,7 @@ namespace unvell.ReoGrid.IO.OpenXML
 
             if (archor.to.col >= rgSheet.ColumnCount)
             {
-				rgSheet.AppendColumns(archor.to.col - rgSheet.ColumnCount + 1);
+                rgSheet.AppendColumns(archor.to.col - rgSheet.ColumnCount + 1);
             }
 
             RGFloat dpi = PlatformUtility.GetDPI();
@@ -2670,7 +2670,7 @@ namespace unvell.ReoGrid.IO.OpenXML
 
             return new Rectangle(start, end);
         }
-        
+
         private static Rectangle GetDrawingBounds(
             RGWorksheet rgSheet,
             CT_AbsoluteAnchor anchor)
@@ -2683,16 +2683,16 @@ namespace unvell.ReoGrid.IO.OpenXML
                 (double)anchor.ext.cy / emuPerPixel
             );
         }
-#endregion // GetDrawingBounds
+        #endregion // GetDrawingBounds
 
-#region LoadGraphic
+        #region LoadGraphic
         private static Drawing.DrawingObject LoadGraphic(Document doc, RGWorksheet rgSheet, Schema.Drawing drawingFile, CT_GraphicalObjectFrame graphicFrame)
         {
             var graphic = graphicFrame.graphic;
 
             if (graphic != null && graphic.graphicData != null)
             {
-switch (graphic.graphicData.uri)
+                switch (graphic.graphicData.uri)
                 {
                     case OpenXMLNamespaces.Chart________:
                         // Тут надо проверить существует id и выделить id
@@ -2738,9 +2738,9 @@ switch (graphic.graphicData.uri)
 
             return null;
         }
-#endregion // LoadGraphic
+        #endregion // LoadGraphic
 
-#region Chart
+        #region Chart
         private static Chart.Chart LoadChart(RGWorksheet rgSheet, Schema.ChartSpace chartSpace)
         {
             if (chartSpace.chart == null) return null;
@@ -2755,7 +2755,7 @@ switch (graphic.graphicData.uri)
 
             if (plot.lineChart != null)
             {
-#region Line Chart Plot Area
+                #region Line Chart Plot Area
 
                 if (plot.lineChart.serials != null)
                 {
@@ -2770,11 +2770,11 @@ switch (graphic.graphicData.uri)
                     DataSource = dataSource,
                     Title = ReadTitle(chartSpace?.chart?.Title),
                 };
-#endregion // Line Chart Plot Area
+                #endregion // Line Chart Plot Area
             }
             else if (plot.barChart != null)
             {
-#region Column/Bar Chart Plot Area
+                #region Column/Bar Chart Plot Area
                 if (plot.barChart.serials != null)
                 {
                     foreach (var ser in plot.barChart.serials)
@@ -2800,11 +2800,11 @@ switch (graphic.graphicData.uri)
                 }
 
                 rgChart.DataSource = dataSource;
-#endregion // Column Chart Plot Area
+                #endregion // Column Chart Plot Area
             }
             else if (plot.pieChart != null)
             {
-#region Pie Chart Plot Area
+                #region Pie Chart Plot Area
                 if (plot.pieChart.serials != null)
                 {
                     foreach (var ser in plot.pieChart.serials)
@@ -2819,11 +2819,11 @@ switch (graphic.graphicData.uri)
                     DataSource = dataSource,
                     Title = ReadTitle(chartSpace?.chart?.Title),
                 };
-#endregion // Pie Chart Plot Area
+                #endregion // Pie Chart Plot Area
             }
             else if (plot.doughnutChart != null)
             {
-#region Doughnut Chart Plot Area
+                #region Doughnut Chart Plot Area
                 if (plot.doughnutChart.serials != null)
                 {
                     foreach (var ser in plot.doughnutChart.serials)
@@ -2837,11 +2837,11 @@ switch (graphic.graphicData.uri)
                     DataSource = dataSource,
                     Title = ReadTitle(chartSpace?.chart?.Title),
                 };
-#endregion // Pie Chart Plot Area	
+                #endregion // Pie Chart Plot Area	
             }
             else if (plot.areaChart != null)
             {
-#region Area Chart Plot Area
+                #region Area Chart Plot Area
                 if (plot.areaChart.serials != null)
                 {
                     foreach (var ser in plot.areaChart.serials)
@@ -2855,7 +2855,7 @@ switch (graphic.graphicData.uri)
                     DataSource = dataSource,
                     Title = ReadTitle(chartSpace?.chart?.Title),
                 };
-#endregion // Area Chart Plot Area
+                #endregion // Area Chart Plot Area
             }
 
             if (rgChart != null)
@@ -2903,7 +2903,7 @@ switch (graphic.graphicData.uri)
             }
             return direction;
         }
-        
+
         private static Chart.WorksheetChartDataSerial ReadDataSerial(Chart.WorksheetChartDataSource dataSource,
             RGWorksheet rgSheet, IChartSerial serial)
         {
@@ -2938,7 +2938,7 @@ switch (graphic.graphicData.uri)
 
             CellPosition labelAddress = CellPosition.Empty;
             WorksheetedCellPosition wsheetedLabelPosition = null;
-            
+
             var label = serial.ChartLabel;
 
             if (label != null
@@ -2990,7 +2990,7 @@ switch (graphic.graphicData.uri)
                 if (error.IsSetted && error.IsUndefined)
                 {
                     var dataRangeVal = Formula.Evaluator.Evaluate(rgSheet.workbook, values.numRef.formula);
-                    
+
                     SheetRangePosition sheetRange;
                     if (dataRangeVal.type == Formula.FormulaValueType.Range)
                     {
@@ -3052,7 +3052,7 @@ switch (graphic.graphicData.uri)
 
             return null;
         }
-        
+
         private static string ReadTitle(CT_Title title)
         {
             var result = "Chart";
@@ -3071,11 +3071,11 @@ switch (graphic.graphicData.uri)
             }
             return result;
         }
-#endregion // Chart
+        #endregion // Chart
 #endif // DRAWING
-#endregion // Drawing
+        #endregion // Drawing
 
-#region RichText
+        #region RichText
 #if DRAWING
         private static RichText CreateRichTextFromRuns(Document doc, IEnumerable<Paragraph> paragraphs)
         {
@@ -3108,7 +3108,7 @@ switch (graphic.graphicData.uri)
         }
 
         private static RichText CreateRichTextFromRuns(
-            Document doc, 
+            Document doc,
             IEnumerable<CT_TextParagraph> paragraphs)
         {
             var rt = new RichText();
@@ -3140,21 +3140,21 @@ switch (graphic.graphicData.uri)
         }
 
         private static void AddRunIntoRichText(
-            Document doc, 
-            RichText rt, 
+            Document doc,
+            RichText rt,
             CT_RegularTextRun r)
         {
             // Код удален
         }
-        
+
         private static void AddRunIntoRichText(Document doc, RichText rt, Run r)
         {
-			if (string.IsNullOrEmpty(r.text.innerText))
-			{
-				// FIXME: need support to read single white space XML text
-				//        https://github.com/unvell/ReoGrid/issues/29
-				return;
-			}
+            if (string.IsNullOrEmpty(r.text.innerText))
+            {
+                // FIXME: need support to read single white space XML text
+                //        https://github.com/unvell/ReoGrid/issues/29
+                return;
+            }
 
             string fontName = null;
             RGFloat fontSize = 8.5f;
@@ -3162,7 +3162,7 @@ switch (graphic.graphicData.uri)
             SolidColor backColor = SolidColor.Transparent;
             Drawing.Text.FontStyles fontStyles = Drawing.Text.FontStyles.Regular;
 
-#region Run Property
+            #region Run Property
             var rpr = r.property;
 
             if (rpr != null)
@@ -3195,10 +3195,10 @@ switch (graphic.graphicData.uri)
                     foreColor = doc.ConvertFromCompColor(rpr.solidFill);
                 }
 
-				if (rpr.strike != null)
-				{
-					fontStyles |= Drawing.Text.FontStyles.Strikethrough;
-				}
+                if (rpr.strike != null)
+                {
+                    fontStyles |= Drawing.Text.FontStyles.Strikethrough;
+                }
 
                 if (rpr.b != null)
                 {
@@ -3227,7 +3227,7 @@ switch (graphic.graphicData.uri)
                     }
                 }
             }
-#endregion // Run Property
+            #endregion // Run Property
 
             int nlIndex = r.text.innerText.IndexOf('\n');
 
@@ -3250,7 +3250,7 @@ switch (graphic.graphicData.uri)
 
         }
 #endif // DRAWING
-#endregion // RichText
+        #endregion // RichText
 
     }
 
@@ -3259,12 +3259,12 @@ switch (graphic.graphicData.uri)
         internal CellPosition pos;
         internal string formula;
     }
-#endregion // Reader
+    #endregion // Reader
 
-#region IndexedColors
+    #region IndexedColors
     sealed class IndexedColorTable
     {
-#region Colors
+        #region Colors
         public static readonly int[] colors = new int[] {
                                                     0x000000, // 0
                                                     0xFFFFFF, // 1
@@ -3336,11 +3336,11 @@ switch (graphic.graphicData.uri)
                                                     //0x0,				// 64: System Foreground
                                                     //0x0,				// 65: System Background
                                                     };
-#endregion // Colors
+        #endregion // Colors
     }
-#endregion // IndexedColors
+    #endregion // IndexedColors
 
-#region Builtin Number Formats
+    #region Builtin Number Formats
     sealed class BuiltinNumberFormats
     {
         public static bool SetFromExcelBuiltinFormat(RGWorksheet rgSheet, Cell cell, int formatId, out CellDataFormatFlag dataFormatFlag)
@@ -3543,7 +3543,7 @@ switch (graphic.graphicData.uri)
                 case 13: // # ??/??
 
                 case 48: // ##0.0E+0
-                                 //throw new NotSupportedException();
+                         //throw new NotSupportedException();
                     break;
             }
 
@@ -3563,9 +3563,9 @@ switch (graphic.graphicData.uri)
         }
 
     }
-#endregion // Builtin Number Formats
+    #endregion // Builtin Number Formats
 
-#region Excel Document
+    #region Excel Document
     internal partial class Document
     {
         private IZipArchive zipArchive;
@@ -3576,7 +3576,7 @@ switch (graphic.graphicData.uri)
 
         private Document()
         {
-            IsReadonly = false;
+            this.IsReadonly = false;
         }
 
         public static Document ReadFromStream(Stream stream)
@@ -3594,7 +3594,7 @@ switch (graphic.graphicData.uri)
             return doc;
         }
 
-#region Load Resources
+        #region Load Resources
 
         internal T LoadEntryFile<T>(string path, string name) where T : class
         {
@@ -3672,9 +3672,9 @@ switch (graphic.graphicData.uri)
             return entry == null ? null : entry.GetStream();
         }
 
-#endregion // Load Resources
+        #endregion // Load Resources
 
-#region SharedStrings
+        #region SharedStrings
 
         public SharedStrings SharedStrings { get; set; }
 
@@ -3692,11 +3692,11 @@ switch (graphic.graphicData.uri)
             }
         }
 
-#endregion // SharedStrings
+        #endregion // SharedStrings
 
         public Stylesheet Stylesheet { get; set; }
 
-#region Themesheet
+        #region Themesheet
         private Theme themesheet;
 
         public Theme Themesheet
@@ -3716,7 +3716,7 @@ switch (graphic.graphicData.uri)
             }
         }
 
-#region Convert CompColor
+        #region Convert CompColor
         // internal SolidColor ConvertFromCompColor(CompColor compColor, CompColor overrideColor = null)
         // {
         //     if (compColor._solidColor.A > 0)
@@ -3874,7 +3874,7 @@ switch (graphic.graphicData.uri)
             switch (sysClr.val)
             {
                 case ST_SystemColorVal.windowText:
-                    return  StaticResources.SystemColor_WindowText;
+                    return StaticResources.SystemColor_WindowText;
                 case ST_SystemColorVal.window:
                     return StaticResources.SystemColor_Window;
             }
@@ -3903,33 +3903,33 @@ switch (graphic.graphicData.uri)
         {
             if (schemeClr != null)
             {
-                var theme = Themesheet;
+                var theme = this.Themesheet;
                 switch (schemeClr.val)
                 {
                     case ST_SchemeColorVal.dk1:
-                        return ConvertFromCompColor(theme.elements.clrScheme.dk1);
+                        return this.ConvertFromCompColor(theme.elements.clrScheme.dk1);
                     case ST_SchemeColorVal.lt1:
-                        return ConvertFromCompColor(theme.elements.clrScheme.lt1);
+                        return this.ConvertFromCompColor(theme.elements.clrScheme.lt1);
                     case ST_SchemeColorVal.dk2:
-                        return ConvertFromCompColor(theme.elements.clrScheme.dk2);
+                        return this.ConvertFromCompColor(theme.elements.clrScheme.dk2);
                     case ST_SchemeColorVal.lt2:
-                        return ConvertFromCompColor(theme.elements.clrScheme.lt2);
+                        return this.ConvertFromCompColor(theme.elements.clrScheme.lt2);
                     case ST_SchemeColorVal.accent1:
-                        return ConvertFromCompColor(theme.elements.clrScheme.accent1);
+                        return this.ConvertFromCompColor(theme.elements.clrScheme.accent1);
                     case ST_SchemeColorVal.accent2:
-                        return ConvertFromCompColor(theme.elements.clrScheme.accent2);
+                        return this.ConvertFromCompColor(theme.elements.clrScheme.accent2);
                     case ST_SchemeColorVal.accent3:
-                        return ConvertFromCompColor(theme.elements.clrScheme.accent3);
+                        return this.ConvertFromCompColor(theme.elements.clrScheme.accent3);
                     case ST_SchemeColorVal.accent4:
-                        return ConvertFromCompColor(theme.elements.clrScheme.accent4);
+                        return this.ConvertFromCompColor(theme.elements.clrScheme.accent4);
                     case ST_SchemeColorVal.accent5:
-                        return ConvertFromCompColor(theme.elements.clrScheme.accent5);
+                        return this.ConvertFromCompColor(theme.elements.clrScheme.accent5);
                     case ST_SchemeColorVal.accent6:
-                        return ConvertFromCompColor(theme.elements.clrScheme.accent6);
+                        return this.ConvertFromCompColor(theme.elements.clrScheme.accent6);
                     case ST_SchemeColorVal.hlink:
-                        return ConvertFromCompColor(theme.elements.clrScheme.hlink);
+                        return this.ConvertFromCompColor(theme.elements.clrScheme.hlink);
                     case ST_SchemeColorVal.folHlink:
-                        return ConvertFromCompColor(theme.elements.clrScheme.folHlink);
+                        return this.ConvertFromCompColor(theme.elements.clrScheme.folHlink);
                 }
                 return SolidColor.Black;
             }
@@ -3941,34 +3941,34 @@ switch (graphic.graphicData.uri)
         {
             if (schemeColor != null)
             {
-                var theme = Themesheet;
+                var theme = this.Themesheet;
 
                 switch (schemeColor.val)
                 {
                     case "dk1":
-                        return ConvertFromCompColor(theme.elements.clrScheme.dk1);
+                        return this.ConvertFromCompColor(theme.elements.clrScheme.dk1);
                     case "lt1":
-                        return ConvertFromCompColor(theme.elements.clrScheme.lt1);
+                        return this.ConvertFromCompColor(theme.elements.clrScheme.lt1);
                     case "dk2":
-                        return ConvertFromCompColor(theme.elements.clrScheme.dk2);
+                        return this.ConvertFromCompColor(theme.elements.clrScheme.dk2);
                     case "lt2":
-                        return ConvertFromCompColor(theme.elements.clrScheme.lt2);
+                        return this.ConvertFromCompColor(theme.elements.clrScheme.lt2);
                     case "accent1":
-                        return ConvertFromCompColor(theme.elements.clrScheme.accent1);
+                        return this.ConvertFromCompColor(theme.elements.clrScheme.accent1);
                     case "accent2":
-                        return ConvertFromCompColor(theme.elements.clrScheme.accent2);
+                        return this.ConvertFromCompColor(theme.elements.clrScheme.accent2);
                     case "accent3":
-                        return ConvertFromCompColor(theme.elements.clrScheme.accent3);
+                        return this.ConvertFromCompColor(theme.elements.clrScheme.accent3);
                     case "accent4":
-                        return ConvertFromCompColor(theme.elements.clrScheme.accent4);
+                        return this.ConvertFromCompColor(theme.elements.clrScheme.accent4);
                     case "accent5":
-                        return ConvertFromCompColor(theme.elements.clrScheme.accent5);
+                        return this.ConvertFromCompColor(theme.elements.clrScheme.accent5);
                     case "accent6":
-                        return ConvertFromCompColor(theme.elements.clrScheme.accent6);
+                        return this.ConvertFromCompColor(theme.elements.clrScheme.accent6);
                     case "hlink":
-                        return ConvertFromCompColor(theme.elements.clrScheme.hlink);
+                        return this.ConvertFromCompColor(theme.elements.clrScheme.hlink);
                     case "folHlink":
-                        return ConvertFromCompColor(theme.elements.clrScheme.folHlink);
+                        return this.ConvertFromCompColor(theme.elements.clrScheme.folHlink);
                 }
                 return SolidColor.Black;
             }
@@ -3989,30 +3989,30 @@ switch (graphic.graphicData.uri)
                 if (shade != null)
                 {
                     result.L = ColorUtility.CalculateFinalLumValue(
-                                   -(float) shade / 100000f,
-                                   (float) result.L * 255f) / 255f;
+                                   -(float)shade / 100000f,
+                                   (float)result.L * 255f) / 255f;
                 }
 
                 if (tint != null)
                 {
                     result.L = ColorUtility.CalculateFinalLumValue(
-                                   (float) tint / 100000f,
-                                   (float) result.L * 255f) / 255f;
+                                   (float)tint / 100000f,
+                                   (float)result.L * 255f) / 255f;
                 }
 
                 if (lumMod != null)
                 {
-                    result.L *= (float) lumMod / 100000f;
+                    result.L *= (float)lumMod / 100000f;
                 }
 
                 if (lumOff != null)
                 {
-                    result.L += (float) lumOff / 100000f;
+                    result.L += (float)lumOff / 100000f;
                 }
 
                 if (satMod != null)
                 {
-                    result.S *= (float) satMod / 100000f;
+                    result.S *= (float)satMod / 100000f;
                 }
                 return ColorUtility.HSLToRgb(result);
             }
@@ -4055,16 +4055,16 @@ switch (graphic.graphicData.uri)
         }
 
         internal SolidColor ConvertFromCompColor(
-            CT_SolidColorFillProperties compColor, 
+            CT_SolidColorFillProperties compColor,
             CT_SolidColorFillProperties overrideColor = null)
         {
             // Обратить внимание что один раз присвоив значение overrideColor
             // перестает участвовать в вычислении
             var result =
-                GetPrecomputedSolidColor(compColor) ??
-                GetSrgbSolidColor(compColor.srgbClr) ??
-                GetSysSolidColor(compColor.sysClr) ??
-                ApplyColorParameters(GetSchemeSolidColor(compColor.schemeClr), overrideColor);
+                this.GetPrecomputedSolidColor(compColor) ??
+                this.GetSrgbSolidColor(compColor.srgbClr) ??
+                this.GetSysSolidColor(compColor.sysClr) ??
+                ApplyColorParameters(this.GetSchemeSolidColor(compColor.schemeClr), overrideColor);
 
             if (result.HasValue && overrideColor == null)
             {
@@ -4080,10 +4080,10 @@ switch (graphic.graphicData.uri)
             // Обратить внимание что один раз присвоив значение overrideColor
             // перестает участвовать в вычислении
             var result =
-                GetPrecomputedSolidColor(compColor) ??
-                GetSrgbSolidColor(compColor.srgbColor) ??
-                GetSysSolidColor(compColor.sysColor) ??
-                ApplyColorParameters(GetSchemeSolidColor(compColor.schemeColor), overrideColor);
+                this.GetPrecomputedSolidColor(compColor) ??
+                this.GetSrgbSolidColor(compColor.srgbColor) ??
+                this.GetSysSolidColor(compColor.sysColor) ??
+                ApplyColorParameters(this.GetSchemeSolidColor(compColor.schemeColor), overrideColor);
 
             if (result.HasValue && overrideColor == null)
             {
@@ -4092,13 +4092,13 @@ switch (graphic.graphicData.uri)
             return result ?? SolidColor.Transparent;
         }
 
-#endregion // Convert CompColor
+        #endregion // Convert CompColor
 
-#endregion // Themesheet
+        #endregion // Themesheet
     }
-#endregion // Excel Document
+    #endregion // Excel Document
 
-#region Exceptions
+    #region Exceptions
 
     class ExcelFormatException : ReoGridException
     {
@@ -4106,5 +4106,5 @@ switch (graphic.graphicData.uri)
         public ExcelFormatException(string msg, Exception inner) : base(msg, inner) { }
     }
 
-#endregion // Exceptions
+    #endregion // Exceptions
 }
