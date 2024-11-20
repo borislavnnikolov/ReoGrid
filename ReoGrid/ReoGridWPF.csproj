@@ -24,25 +24,28 @@
     <UseWPF>true</UseWPF>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     <Configurations>WPFDebug;WPFRelease</Configurations>
-    <TargetFramework>net6.0-windows</TargetFramework>
-    <PackageVersion>3.0.3</PackageVersion>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <PackageVersion>3.0.4</PackageVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 	<PropertyGroup>
-		<Authors>Jingwood,ekra-ltd, Borislav Nikolov</Authors>
+		<Authors>Jingwood,ekra-ltd, Borislav Nikolov, Vasilena Daskalska</Authors>
 		<Company>unvell</Company>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<PackageProjectUrl>https://github.com/borislav.nikolov/</PackageProjectUrl>
+		<PackageProjectUrl>https://github.com/VasilenaDaskalska/ForkReoGrid_Vasilena</PackageProjectUrl>
 		<PackageIcon>icon.png</PackageIcon>
-		<RepositoryUrl>https://github.com/borislav.nikolov/ReoGrid</RepositoryUrl>
+		<RepositoryUrl>https://github.com/VasilenaDaskalska/ForkReoGrid_Vasilena</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
-		<VersionPrefix>3.0.3</VersionPrefix>
+		<VersionPrefix>3.0.4</VersionPrefix>
 		<VersionSuffix></VersionSuffix>
-		<PackageId>net6.ReoGridWPF.dll</PackageId>
+		<PackageId>net8.ReoGridWPF.dll</PackageId>
 		<Description>Fork of the project https://github.com/unvell/ReoGrid
 Powerful and lightweight open source .NET spreadsheet component. Compatible with Excel 2007 format or later. Simple APIs to open/edit/save/print an Excel spreadsheet in the .NET 6 application.</Description>
 		<SignAssembly>true</SignAssembly>
 		<ApplicationIcon>favicon.ico</ApplicationIcon>
-		<Copyright>2012-2022 (c) Jingwood, unvell, all rights reserved.</Copyright>
+		<Copyright>2012-2024 (c) Jingwood, unvell, all rights reserved.</Copyright>
 		<PackageTags>spreadsheet</PackageTags>
 		<PackageReleaseNotes>https://github.com/ekra-ltd/ReoGrid/releases/tag/v3.0.0</PackageReleaseNotes>
 	</PropertyGroup>
@@ -57,6 +60,7 @@ Powerful and lightweight open source .NET spreadsheet component. Compatible with
   </PropertyGroup>
   <PropertyGroup>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Title>net8.ReoGridWPF</Title>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='WPFRelease|netcoreapp3.0|AnyCPU'">
     <DocumentationFile></DocumentationFile>
@@ -148,5 +152,8 @@ Powerful and lightweight open source .NET spreadsheet component. Compatible with
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.IO.Compression" Version="4.3.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 </Project>
